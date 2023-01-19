@@ -1,7 +1,5 @@
 //Write a test for creating new shopping lists.
 
-
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ShoppingLists from './ShoppingLists';
 
@@ -18,8 +16,10 @@ describe('ShoppingLists component', () => {
     );
     //creates a variable that gets the test id of the shopping lists
     const input = getByTestId('shopping-list-form-name-new');
-    
-    const submitButton = getByTestId('shopping-list-form-submit-button-new');
+
+    const submitButton = getByTestId(
+      'shopping-list-form-submit-button-new'
+    );
     //fires an event that changes the value of the input to 'newShoppingList'
     //and clicks the submit button
     fireEvent.change(input, { target: { value: 'newShoppingList' } });
@@ -33,10 +33,3 @@ describe('ShoppingLists component', () => {
     //expect the mock function to have been called with the correct argument.
   });
 });
-
-
-
-
-
-
-

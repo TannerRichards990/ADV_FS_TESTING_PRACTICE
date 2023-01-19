@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+
 import { render, fireEvent } from '@testing-library/react';
 import ShoppingListItem from './ShoppingListItem';
 

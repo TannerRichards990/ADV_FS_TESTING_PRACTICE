@@ -1,8 +1,5 @@
-import React from 'react';
-
-
-//This function accepts the following props: 
-//onUpdateShoppingItem, onDeleteShoppingItem, shoppingItem. 
+//This function accepts the following props:
+//onUpdateShoppingItem, onDeleteShoppingItem, shoppingItem.
 //Shopping item is an object that contains the id, name, etc.
 export default function ShoppingListItem({
   onUpdateShoppingItem,
@@ -21,16 +18,15 @@ export default function ShoppingListItem({
     onDeleteShoppingItem(shoppingItem.id);
   };
   //This function returns the following JSX:
-  return <div>
-    <input
-      type="text"
-      value={shoppingItem.name}
-      onChange={handleUpdate}
-    />
-    <button onClick={handleDelete}>Delete</button>
-  </div>;
+  return (
+    <div>
+      <input
+        type="text"
+        value={shoppingItem.name}
+        onChange={handleUpdate}
+      />
+      <button onClick={handleDelete}>Delete</button>
+    </div>
+  );
 }
 //This function is called when the user clicks the delete button.
-
-
-

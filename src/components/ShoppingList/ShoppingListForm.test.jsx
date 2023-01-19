@@ -1,9 +1,8 @@
-//write a test for the shopping list form rendering, name input, 
+//write a test for the shopping list form rendering, name input,
 //and submit button.
 
 // Path: src\components\ShoppingList\ShoppingListForm.test.jsx
 
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ShoppingListForm from './ShoppingListForm';
 
@@ -28,8 +27,9 @@ describe('ShoppingListForm', () => {
 
   it.skip('submits the form with the correct name', () => {
     const onSubmit = jest.fn();
-    const { getByTestId } = render(<ShoppingListForm id={1} 
-      onSubmit={onSubmit} />);
+    const { getByTestId } = render(
+      <ShoppingListForm id={1} onSubmit={onSubmit} />
+    );
     const input = getByTestId('shopping-list-form-name-1');
     const button = getByTestId('shopping-list-form-submit-button-1');
 
@@ -43,5 +43,3 @@ describe('ShoppingListForm', () => {
     });
   });
 });
-
-
