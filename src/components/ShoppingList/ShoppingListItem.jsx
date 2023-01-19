@@ -21,14 +21,14 @@ export default function ShoppingListItem({
     onDeleteShoppingItem(shoppingItem.id);
   };
   //This function returns the following JSX:
-  return <li>
+  return <div>
     <input
       type="text"
       value={shoppingItem.name}
       onChange={handleUpdate}
     />
     <button onClick={handleDelete}>Delete</button>
-  </li>;
+  </div>;
 }
 //This function is called when the user clicks the delete button.
 
