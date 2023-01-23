@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import ShoppingListItem from './ShoppingListItem';
 
 export default function ShoppingListItemForm() {
-  const [shoppingItems, setShoppingItems] = useState([]);
+  const [shoppingItems, setShoppingItems] = useState([
+    { id: 1, name: 'item 1' },
+    { id: 2, name: 'item 2' },
+    { id: 3, name: 'item 3' },
+  ]);
 
   const handleUpdateShoppingItem = (id, updatedShoppingItem) => {
     setShoppingItems((prevShoppingItems) =>
