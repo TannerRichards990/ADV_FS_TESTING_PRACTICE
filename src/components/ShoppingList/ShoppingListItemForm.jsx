@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import ShoppingListItem from './ShoppingListItem';
 
-export default function ShoppingListItemForm() {
-  const [shoppingItems, setShoppingItems] = useState([
-    { id: 1, name: 'item 1' },
-    { id: 2, name: 'item 2' },
-    { id: 3, name: 'item 3' },
-  ]);
+const ShoppingListItemForm = () => {
+  const [shoppingItems, setShoppingItems] = useState([]);
+  const [newItem, setNewItem] = useState({
+    item_name: '',
+    quantity: 1,
+  });
 
-  const handleUpdateShoppingItem = (id, updatedShoppingItem) => {
+  const handleUpdateShoppingItem = (updatedShoppingItem) => {
     setShoppingItems((prevShoppingItems) =>
       prevShoppingItems.map((shoppingItem) =>
-        shoppingItem.id === id ? updatedShoppingItem : shoppingItem
+        shoppingItem.id === updatedShoppingItem.id
+          ? updatedShoppingItem
+          : shoppingItem
       )
     );
   };
@@ -24,9 +26,47 @@ export default function ShoppingListItemForm() {
     );
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newItem.item_name.trim()) {
+      setShoppingItems([
+        ...shoppingItems,
+        { id: Date.now(), ...newItem },
+      ]);
+      setNewItem({
+        item_name: '',
+        quantity: 1,
+      });
+    }
+  };
+
+  const handleChange = (e) => {
+    setNewItem({
+      ...newItem,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <div>
-      <ul>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="item_name"
+          value={newItem.item_name}
+          onChange={handleChange}
+          placeholder="Add a new item"
+        />
+        <input
+          type="number"
+          name="quantity"
+          value={newItem.quantity}
+          onChange={handleChange}
+          placeholder="Add a quantity"
+        />
+        <button type="submit">Add</button>
+      </form>
+      <div>
         {shoppingItems.map((shoppingItem) => (
           <ShoppingListItem
             key={shoppingItem.id}
@@ -35,7 +75,9 @@ export default function ShoppingListItemForm() {
             onDeleteShoppingItem={handleDeleteShoppingItem}
           />
         ))}
-      </ul>
+      </div>
     </div>
   );
-}
+};
+
+export default ShoppingListItemForm;
