@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ShoppingListItem from './ShoppingListItem';
 
-const ShoppingListItemForm = () => {
+const ShoppingListItemForm = ({ onSubmit }) => {
   const [shoppingItems, setShoppingItems] = useState([]);
   const [newItem, setNewItem] = useState({
     item_name: '',
     quantity: 1,
   });
+  const [editingId, setEditingId] = useState(null);
 
   const handleUpdateShoppingItem = (updatedShoppingItem) => {
     setShoppingItems((prevShoppingItems) =>
@@ -16,28 +17,7 @@ const ShoppingListItemForm = () => {
           : shoppingItem
       )
     );
-  };
-
-  const handleDeleteShoppingItem = (id) => {
-    setShoppingItems((prevShoppingItems) =>
-      prevShoppingItems.filter(
-        (shoppingItem) => shoppingItem.id !== id
-      )
-    );
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (newItem.item_name.trim()) {
-      setShoppingItems([
-        ...shoppingItems,
-        { id: Date.now(), ...newItem },
-      ]);
-      setNewItem({
-        item_name: '',
-        quantity: 1,
-      });
-    }
+    setEditingId(null);
   };
 
   const handleChange = (e) => {
@@ -47,24 +27,36 @@ const ShoppingListItemForm = () => {
     });
   };
 
+  const handleEdit = (id) => {
+    setEditingId(id);
+  };
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form
+        data-testid="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(newItem);
+        }}
+      >
         <input
           type="text"
           name="item_name"
-          value={newItem.item_name}
+          data-testid="item-input"
           onChange={handleChange}
           placeholder="Add a new item"
         />
         <input
           type="number"
           name="quantity"
-          value={newItem.quantity}
+          data-testid="quantity-input"
           onChange={handleChange}
           placeholder="Add a quantity"
         />
-        <button type="submit">Add</button>
+        <button type="submit" data-testid="submit-button">
+          Add
+        </button>
       </form>
       <div>
         {shoppingItems.map((shoppingItem) => (
@@ -72,7 +64,8 @@ const ShoppingListItemForm = () => {
             key={shoppingItem.id}
             shoppingItem={shoppingItem}
             onUpdateShoppingItem={handleUpdateShoppingItem}
-            onDeleteShoppingItem={handleDeleteShoppingItem}
+            onEdit={() => handleEdit(shoppingItem.id)}
+            editing={editingId === shoppingItem.id}
           />
         ))}
       </div>

@@ -4,6 +4,7 @@ import { createShoppingList } from '../services/shopping-lists.js';
 import {
   createShoppingListItem,
   updateShoppingListItem,
+  deleteShoppingListItem,
 } from '../services/shopping-list-items.js';
 
 export default function useShoppingLists() {
@@ -18,22 +19,31 @@ export default function useShoppingLists() {
     const dbFriendlyShoppingList = { ...shoppingList };
     delete dbFriendlyShoppingList.id;
     delete dbFriendlyShoppingList.shoppingItems;
-    const newShoppingLists = await createShoppingList(dbFriendlyShoppingList);
+    const newShoppingLists = await createShoppingList(
+      dbFriendlyShoppingList
+    );
     const newShoppingList = newShoppingLists[0];
     newShoppingList.shoppingItems = [];
     setShoppingLists([newShoppingList].concat(shoppingLists));
   };
 
-  const onCreateShoppingItem = async (shoppingListId, shoppingListItem) => {
+  const onCreateShoppingItem = async (
+    shoppingListId,
+    shoppingListItem
+  ) => {
     const dbFriendlyShoppingListItem = {
       ...shoppingListItem,
       shopping_list_id: shoppingListId,
     };
     delete dbFriendlyShoppingListItem.id;
-    const newItems = await createShoppingListItem(dbFriendlyShoppingListItem);
+    const newItems = await createShoppingListItem(
+      dbFriendlyShoppingListItem
+    );
     const item = newItems[0];
     const newLists = [...shoppingLists];
-    const index = newLists.findIndex(list => list.id === item.shopping_list_id);
+    const index = newLists.findIndex(
+      (list) => list.id === item.shopping_list_id
+    );
     newLists[index].shoppingItems.unshift(item);
     setShoppingLists(newLists);
   };
@@ -43,11 +53,11 @@ export default function useShoppingLists() {
   const onUpdateShoppingItem = async (shoppingListItem) => {
     await updateShoppingListItem(shoppingListItem);
     const newLists = [...shoppingLists];
-    const listIndex = newLists.findIndex(list => {
+    const listIndex = newLists.findIndex((list) => {
       return list.id === shoppingListItem.shopping_list_id;
     });
     const newList = newLists[listIndex];
-    const itemIndex = newList.shoppingItems.findIndex(item => {
+    const itemIndex = newList.shoppingItems.findIndex((item) => {
       return item.id === shoppingListItem.id;
     });
     const newItems = [...newList.shoppingItems];
@@ -60,17 +70,18 @@ export default function useShoppingLists() {
   };
 
   const onDeleteShoppingItem = async (shoppingListItem) => {
-    await updateShoppingListItem(shoppingListItem);
+    await deleteShoppingListItem(shoppingListItem.id);
     const newLists = [...shoppingLists];
-    const listIndex = newLists.findIndex(list => {
+    const listIndex = newLists.findIndex((list) => {
       return list.id === shoppingListItem.shopping_list_id;
     });
     const newList = newLists[listIndex];
-    const itemIndex = newList.shoppingItems.findIndex(item => {
+    const itemIndex = newList.shoppingItems.findIndex((item) => {
       return item.id === shoppingListItem.id;
     });
     const newItems = [...newList.shoppingItems];
-    delete newItems[itemIndex];
+    // delete newItems[itemIndex];
+    newItems.splice(itemIndex, 1);
     newLists[listIndex] = {
       ...newList,
       shoppingItems: newItems,
